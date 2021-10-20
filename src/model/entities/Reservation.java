@@ -32,13 +32,23 @@ public class Reservation {
     public Date getCheckOut() {
         return checkOut;
     }
-    public long duration (){
+
+    public long duration() {
         long diff = checkOut.getTime() - checkIn.getTime();
-        return TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
-    public void updateDates (Date checkIn, Date checkOut){
+
+    public String updateDates(Date checkIn, Date checkOut) {
+        Date now = new Date();
+        if (checkIn.before(now) || checkOut.before(now)) {
+            return "Error in reservation: Reservation dates for update must be future dates";
+        }
+        if (!checkOut.after(checkIn)) {
+            return "Error in reservation: Reservation dates for update must be future dates";
+        }
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        return null;
     }
     @Override
     public String toString(){
